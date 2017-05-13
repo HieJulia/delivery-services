@@ -1,0 +1,5 @@
+spring:
+  data:
+    cassandra:
+      keyspace-name: delivery
+contact-points: localhost
