@@ -1,7 +1,7 @@
 package com.cicero.deliveryservices.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.UUID;
 
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
@@ -15,7 +15,7 @@ public class DeliveryOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@PrimaryKey
-	private Long orderId;
+	private UUID orderId;
 	private int quantity;
 	private String type;
 	private String description;
@@ -26,11 +26,11 @@ public class DeliveryOrder implements Serializable {
 	public DeliveryOrder() {
 	}
 
-	public Long getOrderId() {
+	public UUID getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(UUID orderId) {
 		this.orderId = orderId;
 	}
 

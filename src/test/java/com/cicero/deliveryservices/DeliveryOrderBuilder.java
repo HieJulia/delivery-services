@@ -1,6 +1,6 @@
 package com.cicero.deliveryservices;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.UUID;
 
 import com.cicero.deliveryservices.domain.DeliveryOrder;
 
@@ -8,13 +8,13 @@ public class DeliveryOrderBuilder {
 	
 	public DeliveryOrder sampleDeliveryOrderBuilder() {
 		DeliveryOrder deliveryOrder = new DeliveryOrder();
-		AtomicInteger orderId = new AtomicInteger();
-		deliveryOrder.setOrderId(new Long(orderId.incrementAndGet()));
+		deliveryOrder.setOrderId(UUID.randomUUID());
 		deliveryOrder.setQuantity(1);
-		deliveryOrder.setTotal(4164.99);
+		deliveryOrder.setTotal(3014.99);
 		deliveryOrder.setType("ELETRO-ELETRONICO");
-		deliveryOrder.setStatus("ENTREGUE");
-		deliveryOrder.setDescription("Apple MacBook Air");
+		deliveryOrder.setStatus("PENDENTE");
+		deliveryOrder.setDescription("Geladeira 500l");
+		deliveryOrder.setAddress("Avenue Third 590");
 		return deliveryOrder;
 	}
 

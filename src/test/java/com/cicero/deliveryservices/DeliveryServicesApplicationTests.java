@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cicero.deliveryservices.domain.DeliveryOrder;
 import com.cicero.deliveryservices.repository.DeliveryOrderRepository;
+import com.cicero.deliveryservices.service.DeliveryOrderService;
 
 
 @RunWith(SpringRunner.class)
@@ -17,14 +18,14 @@ import com.cicero.deliveryservices.repository.DeliveryOrderRepository;
 public class DeliveryServicesApplicationTests {
 	
 	@Autowired
-	private DeliveryOrderRepository deliveryOrderRepository;
+	private DeliveryOrderService deliveryOrderService;
 
 	@Test
 	public void shouldSaveDeliveryOrder() {
 		
 		DeliveryOrder deliveryOrder =  new DeliveryOrderBuilder().sampleDeliveryOrderBuilder();
 		
-		deliveryOrder = this.deliveryOrderRepository.save(deliveryOrder);
+		deliveryOrder = this.deliveryOrderService.createOrUpdateOrder(deliveryOrder);
 		
 		assertNotNull(deliveryOrder);
 		
