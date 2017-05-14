@@ -1,7 +1,8 @@
 package com.cicero.deliveryservices.service;
 
-import com.cicero.deliveryservices.domain.DeliveryOrder;
+import com.cicero.deliveryservices.form.DeliveryOrderForm;
+import com.cicero.deliveryservices.sender.MessageResponse;
 
 public interface DeliveryOrderServiceAsync {
-	DeliveryOrder createOrUpdateOrder(DeliveryOrder order);
+	MessageResponse createOrUpdateOrder(DeliveryOrderForm order);
 }

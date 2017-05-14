@@ -1,7 +1,5 @@
 package com.cicero.deliveryservices;
 
-import javax.sound.midi.Receiver;
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -9,6 +7,7 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,11 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class DeliveryServicesApplication {
 
-	final static String queueName = "delivery-service";
+	@Value("${delivery.service.queue}")
+	private String queueName;
+	
+	@Value("${delivery.service.exchange}")
+	private String deliveryServiceExchange;
 
 	@Bean
 	Queue queue() {
@@ -25,7 +28,7 @@ public class DeliveryServicesApplication {
 
 	@Bean
 	TopicExchange exchange() {
-		return new TopicExchange("delivery-service-exchange");
+		return new TopicExchange(deliveryServiceExchange);
 	}
 
 	@Bean

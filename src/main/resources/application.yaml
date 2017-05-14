@@ -3,3 +3,7 @@ spring:
     cassandra:
       keyspace-name: delivery
 contact-points: localhost
+delivery:
+    service:
+        queue: delivery-service
+        exchange: delivery-service-exchange

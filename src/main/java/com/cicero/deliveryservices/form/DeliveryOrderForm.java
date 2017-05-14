@@ -1,20 +1,15 @@
-package com.cicero.deliveryservices.domain;
+package com.cicero.deliveryservices.form;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
-
-@Table(value = "deliveryOrder")
-public class DeliveryOrder implements Serializable {
+public class DeliveryOrderForm implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@PrimaryKey
+	
 	private UUID orderId;
 	private int quantity;
 	private String type;
@@ -22,20 +17,8 @@ public class DeliveryOrder implements Serializable {
 	private double total;
 	private String address;
 	private String status;
-
-	public DeliveryOrder() {
-	}
-
-	public DeliveryOrder(UUID orderId, int quantity, String type, String description, double total, String address,
-			String status) {
-		super();
-		this.orderId = orderId;
-		this.quantity = quantity;
-		this.type = type;
-		this.description = description;
-		this.total = total;
-		this.address = address;
-		this.status = status;
+	
+	public DeliveryOrderForm() {
 	}
 
 	public UUID getOrderId() {
@@ -92,6 +75,16 @@ public class DeliveryOrder implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[DeliveryOrderForm::").append("OrderId=").append(this.orderId).append(", quantity=")
+				.append(this.quantity).append(", type=").append(this.type).append(", description=")
+				.append(this.description).append(", total=").append(this.total).append(", address=")
+				.append(this.address).append(", status=").append(this.status).append("]");
+		return sb.toString();
 	}
 
 }

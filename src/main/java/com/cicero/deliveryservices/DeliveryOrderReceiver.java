@@ -5,9 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cicero.deliveryservices.domain.DeliveryOrder;
+import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.sender.MessageSender;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
+import com.cicero.deliveryservices.util.OrderServiceConverter;
 
 @Component
 public class DeliveryOrderReceiver {
@@ -17,9 +18,9 @@ public class DeliveryOrderReceiver {
 	@Autowired
 	private DeliveryOrderService deliveryOrderService;
 
-	public void receiveMessage(DeliveryOrder orderMessage) {
-		log.info("Received <" + orderMessage + ">");
-		deliveryOrderService.createOrUpdateOrder(orderMessage);
+	public void receiveMessage(DeliveryOrderForm orderMessage) {
+		log.info("[Received Message]:: " + orderMessage);
+		this.deliveryOrderService.createOrUpdateOrder(OrderServiceConverter.convertFromDeliveryForm(orderMessage));
 	}
 
 }

@@ -23,8 +23,7 @@ public class DeliveryOrderServiceImpl implements DeliveryOrderService {
 	}
 
 	@Override
-	public DeliveryOrder createOrUpdateOrder(DeliveryOrder order) {
-		
+	public DeliveryOrder createOrUpdateOrder(final DeliveryOrder order) {
 		if (null == order.getOrderId()) {
 			order.setOrderId(UUID.randomUUID());
 		}

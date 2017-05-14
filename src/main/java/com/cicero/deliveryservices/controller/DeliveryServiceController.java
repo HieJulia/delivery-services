@@ -14,32 +14,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cicero.deliveryservices.domain.DeliveryOrder;
-import com.cicero.deliveryservices.sender.MessageSender;
+import com.cicero.deliveryservices.form.DeliveryOrderForm;
+import com.cicero.deliveryservices.sender.MessageResponse;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
+import com.cicero.deliveryservices.service.DeliveryOrderServiceAsync;
 
 @RestController
 @RequestMapping("/api")
 public class DeliveryServiceController {
-	
+
 	@Autowired
 	private DeliveryOrderService deliveryOrderService;
-	
+
 	@Autowired
-	private MessageSender messageSender;
-	
-	@RequestMapping(method = RequestMethod.GET, path="/delivery/{id}", produces = "application/json")
+	private DeliveryOrderServiceAsync deliveryOrderServiceAsync;
+
+	@RequestMapping(method = RequestMethod.GET, path = "/delivery/{id}", produces = "application/json")
 	public @ResponseBody DeliveryOrder searchDeliveryOrder(@PathVariable("id") String order) {
 		return this.deliveryOrderService.findOrder(UUID.fromString(order));
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, path="/delivery", consumes = "application/json")
-	public @ResponseBody DeliveryOrder saveDeliveryOrder(@RequestBody(required = true) @Valid DeliveryOrder address) {
-		messageSender.sendMessage(address);
-//		return this.deliveryOrderService.createOrUpdateOrder(address);
-		return address;
+
+	@RequestMapping(method = RequestMethod.POST, path = "/delivery", consumes = "application/json")
+	public @ResponseBody MessageResponse saveDeliveryOrder(
+			@RequestBody(required = true) @Valid DeliveryOrderForm deliveryOrderForm) {
+		MessageResponse response = this.deliveryOrderServiceAsync.createOrUpdateOrder(deliveryOrderForm);
+		return response;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, path="/delivery", produces = "application/json")
+
+	@RequestMapping(method = RequestMethod.GET, path = "/delivery", produces = "application/json")
 	public @ResponseBody List<DeliveryOrder> searchAllDeliveryOrder() {
 		return this.deliveryOrderService.findAll();
 	}
