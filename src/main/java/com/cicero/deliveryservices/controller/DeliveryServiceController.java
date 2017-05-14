@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cicero.deliveryservices.domain.DeliveryOrder;
+import com.cicero.deliveryservices.sender.MessageSender;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 
 @RestController
@@ -23,6 +24,9 @@ public class DeliveryServiceController {
 	@Autowired
 	private DeliveryOrderService deliveryOrderService;
 	
+	@Autowired
+	private MessageSender messageSender;
+	
 	@RequestMapping(method = RequestMethod.GET, path="/delivery/{id}", produces = "application/json")
 	public @ResponseBody DeliveryOrder searchDeliveryOrder(@PathVariable("id") String order) {
 		return this.deliveryOrderService.findOrder(UUID.fromString(order));
@@ -30,7 +34,9 @@ public class DeliveryServiceController {
 	
 	@RequestMapping(method = RequestMethod.POST, path="/delivery", consumes = "application/json")
 	public @ResponseBody DeliveryOrder saveDeliveryOrder(@RequestBody(required = true) @Valid DeliveryOrder address) {
-		return this.deliveryOrderService.createOrUpdateOrder(address);
+		messageSender.sendMessage(address);
+//		return this.deliveryOrderService.createOrUpdateOrder(address);
+		return address;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path="/delivery", produces = "application/json")
