@@ -13,38 +13,42 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cicero.deliveryservices.domain.DeliveryOrder;
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.sender.MessageResponse;
-import com.cicero.deliveryservices.service.DeliveryOrderRedisService;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 import com.cicero.deliveryservices.service.DeliveryOrderServiceAsync;
 
+/**
+ * Controller que recebe as requisições da API.
+ * 
+ * @author cicero
+ *
+ */
 @RestController
 @RequestMapping("/api")
 public class DeliveryServiceController {
 
-	@Autowired
-	private DeliveryOrderService deliveryOrderService;
+    @Autowired
+    private DeliveryOrderService deliveryOrderService;
 
-	@Autowired
-	private DeliveryOrderServiceAsync deliveryOrderServiceAsync;
-	
-	@RequestMapping(method = RequestMethod.GET, path = "/delivery/{id}", produces = "application/json")
-	public @ResponseBody DeliveryOrderForm searchDeliveryOrder(@PathVariable("id") String order) {
-		return deliveryOrderService.findOrder(UUID.fromString(order));
-	}
+    @Autowired
+    private DeliveryOrderServiceAsync deliveryOrderServiceAsync;
 
-	@RequestMapping(method = RequestMethod.POST, path = "/delivery", consumes = "application/json")
-	public @ResponseBody MessageResponse saveDeliveryOrder(
-			@RequestBody(required = true) @Valid DeliveryOrderForm deliveryOrderForm) {
-		MessageResponse response = this.deliveryOrderServiceAsync.createOrUpdateOrder(deliveryOrderForm);
-		return response;
-	}
+    @RequestMapping(method = RequestMethod.GET, path = "/delivery/{id}", produces = "application/json")
+    public @ResponseBody DeliveryOrderForm searchDeliveryOrder(@PathVariable("id") String order) {
+	return deliveryOrderService.findOrder(UUID.fromString(order));
+    }
 
-	@RequestMapping(method = RequestMethod.GET, path = "/delivery", produces = "application/json")
-	public @ResponseBody List<DeliveryOrderForm> searchAllDeliveryOrder() {
-		return deliveryOrderService.findAll();
-	}
+    @RequestMapping(method = RequestMethod.POST, path = "/delivery", consumes = "application/json")
+    public @ResponseBody MessageResponse saveDeliveryOrder(
+	    @RequestBody(required = true) @Valid DeliveryOrderForm deliveryOrderForm) {
+	MessageResponse response = this.deliveryOrderServiceAsync.createOrUpdateOrder(deliveryOrderForm);
+	return response;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/delivery", produces = "application/json")
+    public @ResponseBody List<DeliveryOrderForm> searchAllDeliveryOrder() {
+	return deliveryOrderService.findAll();
+    }
 
 }

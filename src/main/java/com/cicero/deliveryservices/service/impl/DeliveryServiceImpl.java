@@ -10,25 +10,35 @@ import com.cicero.deliveryservices.service.DeliveryOrderRedisService;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 import com.cicero.deliveryservices.service.DeliveryService;
 
+/**
+ * Implementacao de {@linkDeliveryService}
+ * @author cicero
+ *
+ */
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
-	
-	@Autowired
-	private DeliveryOrderRedisService deliveryOrderRedisService;
-	
-	@Autowired
-	private DeliveryOrderService deliveryOrderService;
 
-	@Override
-	public List<DeliveryOrderForm> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Autowired
+    private DeliveryOrderRedisService deliveryOrderRedisService;
 
-	@Override
-	public DeliveryOrderForm findOne(String orderId) {
-		deliveryOrderRedisService.findOne(orderId);
-		return null;
-	}
+    @Autowired
+    private DeliveryOrderService deliveryOrderService;
+
+    /* (non-Javadoc)
+     * @see com.cicero.deliveryservices.service.DeliveryService#findAll()
+     */
+    @Override
+    public List<DeliveryOrderForm> findAll() {
+	return deliveryOrderRedisService.findAll();
+    }
+
+    /* (non-Javadoc)
+     * @see com.cicero.deliveryservices.service.DeliveryService#findOne(java.lang.String)
+     */
+    @Override
+    public DeliveryOrderForm findOne(String orderId) {
+	deliveryOrderRedisService.findOne(orderId);
+	return null;
+    }
 
 }

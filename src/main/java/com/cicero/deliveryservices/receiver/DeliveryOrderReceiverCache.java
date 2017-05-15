@@ -10,19 +10,30 @@ import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.repository.DeliveryOrderRedisRepository;
 import com.cicero.deliveryservices.sender.MessageSender;
 
+/**
+ * Consumer para salvar mensagem no Redis
+ * 
+ * @author cicero
+ *
+ */
 @Component
 public class DeliveryOrderReceiverCache {
-	
-	private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
-	
-	
-	@Autowired
-	private DeliveryOrderRedisRepository deliveryOrderRedisRepository;
 
-	@RabbitListener(queues = "delivery-service")
-	public void receiveMessage(DeliveryOrderForm orderMessage) {
-		log.info("[Received Message-Redis]:: " + orderMessage);
-		this.deliveryOrderRedisRepository.save(orderMessage);
-	}
+    private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
+
+    @Autowired
+    private DeliveryOrderRedisRepository deliveryOrderRedisRepository;
+
+    /**
+     * Salva a mensagem da fila no Redis
+     * 
+     * @param orderMessage
+     *            uma ordem de entrega.
+     */
+    @RabbitListener(queues = "delivery-service")
+    public void receiveMessage(DeliveryOrderForm orderMessage) {
+	log.info("[Received Message-Redis]:: " + orderMessage);
+	this.deliveryOrderRedisRepository.save(orderMessage);
+    }
 
 }

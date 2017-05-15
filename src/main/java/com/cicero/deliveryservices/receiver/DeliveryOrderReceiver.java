@@ -10,17 +10,29 @@ import com.cicero.deliveryservices.sender.MessageSender;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 import com.cicero.deliveryservices.util.OrderServiceConverter;
 
+/**
+ * Consumer para salvar a mensagem do banco de dados.
+ * 
+ * @author cicero
+ *
+ */
 @Component
 public class DeliveryOrderReceiver {
-	
-	private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
-	
-	@Autowired
-	private DeliveryOrderService deliveryOrderService;
 
-	public void receiveMessage(DeliveryOrderForm orderMessage) {
-		log.info("[Received Message]:: " + orderMessage);
-		this.deliveryOrderService.createOrUpdateOrder(OrderServiceConverter.convertFromDeliveryForm(orderMessage));
-	}
+    private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
+
+    @Autowired
+    private DeliveryOrderService deliveryOrderService;
+
+    /**
+     * Recebe a mensagem da fila e persiste no banco
+     * 
+     * @param orderMessage
+     *            uma ordem de entrega.
+     */
+    public void receiveMessage(DeliveryOrderForm orderMessage) {
+	log.info("[Received Message]:: " + orderMessage);
+	this.deliveryOrderService.createOrUpdateOrder(OrderServiceConverter.convertFromDeliveryForm(orderMessage));
+    }
 
 }

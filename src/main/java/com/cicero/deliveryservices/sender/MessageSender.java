@@ -12,23 +12,33 @@ import org.springframework.stereotype.Component;
 
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
 
+/**
+ * Envia as ordem de entrega para fila.
+ * @author cicero
+ *
+ */
 @Component
 public class MessageSender {
 
-	private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
-	
-	@Value("${delivery.service.queue}")
-	private String queueName;
+    private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
 
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
+    @Value("${delivery.service.queue}")
+    private String queueName;
 
-	@Scheduled(fixedDelay = 3000L)
-	public MessageResponse sendMessage(DeliveryOrderForm message) {
-		message.setOrderId(UUID.randomUUID());
-		log.info("[Sending message] ==> " + message.toString());
-		rabbitTemplate.convertAndSend(queueName, message);
-		return new MessageResponse(message.getOrderId().toString());
-	}
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    /**
+     * Envia uma ordem de entrega para fila.
+     * @param message mensagem a ser enviada para fila {@link DeliveryOrderForm}
+     * @return {@link MessageResponse} resposta com identificador
+     */
+    @Scheduled(fixedDelay = 3000L)
+    public MessageResponse sendMessage(DeliveryOrderForm message) {
+	message.setOrderId(UUID.randomUUID());
+	log.info("[Sending message] ==> " + message.toString());
+	rabbitTemplate.convertAndSend(queueName, message);
+	return new MessageResponse(message.getOrderId().toString());
+    }
 
 }

@@ -13,44 +13,58 @@ import com.cicero.deliveryservices.service.DeliveryOrderRedisService;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 import com.cicero.deliveryservices.util.OrderServiceConverter;
 
+/**
+ * Implementacao de {@link DeliveryOrderService}
+ * @author cicero
+ *
+ */
 @Service
 public class DeliveryOrderServiceImpl implements DeliveryOrderService {
-	
-	@Autowired
-	private DeliveryOrderRepository deliveryOrderRepository;
-	
-	@Autowired
-	private DeliveryOrderRedisService deliveryOrderRedisService;
 
-	@Override
-	public DeliveryOrderForm findOrder(UUID order) {
-		DeliveryOrderForm found = deliveryOrderRedisService.findOne(order.toString());
-		if (null == found) {
-			found = OrderServiceConverter.convertFromDeliveryOrder(deliveryOrderRepository.findOne(order));
-			deliveryOrderRedisService.save(found);
-		}
-		
-		return found;
+    @Autowired
+    private DeliveryOrderRepository deliveryOrderRepository;
+
+    @Autowired
+    private DeliveryOrderRedisService deliveryOrderRedisService;
+
+    /* (non-Javadoc)
+     * @see com.cicero.deliveryservices.service.DeliveryOrderService#findOrder(java.util.UUID)
+     */
+    @Override
+    public DeliveryOrderForm findOrder(UUID order) {
+	DeliveryOrderForm found = deliveryOrderRedisService.findOne(order.toString());
+	if (null == found) {
+	    found = OrderServiceConverter.convertFromDeliveryOrder(deliveryOrderRepository.findOne(order));
+	    deliveryOrderRedisService.save(found);
 	}
 
-	@Override
-	public DeliveryOrderForm createOrUpdateOrder(final DeliveryOrder order) {
-		if (null == order.getOrderId()) {
-			order.setOrderId(UUID.randomUUID());
-		}
-				
-		return OrderServiceConverter.convertFromDeliveryOrder(deliveryOrderRepository.save(order));
+	return found;
+    }
+
+    /* (non-Javadoc)
+     * @see com.cicero.deliveryservices.service.DeliveryOrderService#createOrUpdateOrder(com.cicero.deliveryservices.domain.DeliveryOrder)
+     */
+    @Override
+    public DeliveryOrderForm createOrUpdateOrder(final DeliveryOrder order) {
+	if (null == order.getOrderId()) {
+	    order.setOrderId(UUID.randomUUID());
 	}
 
-	@Override
-	public List<DeliveryOrderForm> findAll() {
-		List<DeliveryOrderForm> deliverys = deliveryOrderRedisService.findAll();
-		
-		for (DeliveryOrderForm delivery : deliveryOrderRedisService.findAll()) {
-			deliverys.add(delivery);
-		}
-		
-		return deliverys;
+	return OrderServiceConverter.convertFromDeliveryOrder(deliveryOrderRepository.save(order));
+    }
+
+    /* (non-Javadoc)
+     * @see com.cicero.deliveryservices.service.DeliveryOrderService#findAll()
+     */
+    @Override
+    public List<DeliveryOrderForm> findAll() {
+	List<DeliveryOrderForm> deliverys = deliveryOrderRedisService.findAll();
+
+	for (DeliveryOrderForm delivery : deliveryOrderRedisService.findAll()) {
+	    deliverys.add(delivery);
 	}
+
+	return deliverys;
+    }
 
 }

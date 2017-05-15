@@ -21,62 +21,63 @@ import com.cicero.deliveryservices.receiver.DeliveryOrderReceiver;
 @SpringBootApplication
 public class DeliveryServicesApplication {
 
-	@Value("${delivery.service.queue}")
-	private String queueName;
+    @Value("${delivery.service.queue}")
+    private String queueName;
 
-	@Value("${delivery.service.exchange}")
-	private String deliveryServiceExchange;
+    @Value("${delivery.service.exchange}")
+    private String deliveryServiceExchange;
 
-	@Bean
-	Queue queue() {
-		return new Queue(queueName, false);
-	}
+    @Bean
+    Queue queue() {
+	return new Queue(queueName, false);
+    }
 
-	@Bean
-	TopicExchange exchange() {
-		return new TopicExchange(deliveryServiceExchange);
-	}
+    @Bean
+    TopicExchange exchange() {
+	return new TopicExchange(deliveryServiceExchange);
+    }
 
-	@Bean
-	Binding binding(Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with(queueName);
-	}
+    @Bean
+    Binding binding(Queue queue, TopicExchange exchange) {
+	return BindingBuilder.bind(queue).to(exchange).with(queueName);
+    }
 
-	@Bean
-	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-			MessageListenerAdapter listenerAdapter) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(queueName);
-		container.setMessageListener(listenerAdapter);
-		return container;
-	}
+    @Bean
+    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+	    MessageListenerAdapter listenerAdapter) {
+	SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+	container.setConnectionFactory(connectionFactory);
+	container.setQueueNames(queueName);
+	container.setMessageListener(listenerAdapter);
+	container.setPrefetchCount(2);
+	return container;
+    }
 
-	@Bean
-	MessageListenerAdapter listenerAdapter(DeliveryOrderReceiver receiver) {
-		return new MessageListenerAdapter(receiver, "receiveMessage");
-	}
+    @Bean
+    MessageListenerAdapter listenerAdapter(DeliveryOrderReceiver receiver) {
+	return new MessageListenerAdapter(receiver, "receiveMessage");
+    }
 
-	@Bean
-	JedisConnectionFactory jedisConnectionFactory() {
-		return new JedisConnectionFactory();
-	}
+    @Bean
+    JedisConnectionFactory jedisConnectionFactory() {
+	return new JedisConnectionFactory();
+    }
 
-	@Bean
-	public RedisTemplate<String, Object> redisTemplate() {
-		RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
-		template.setConnectionFactory(jedisConnectionFactory());
-		return template;
-	}
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+	RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
+	template.setConnectionFactory(jedisConnectionFactory());
+	return template;
+    }
 
-	@Bean
-	public CacheManager cacheManager(RedisTemplate redisTemplate) {
-		RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-		cacheManager.setDefaultExpiration(3000);
-		return cacheManager;
-	}
+    @Bean
+    public CacheManager cacheManager(RedisTemplate redisTemplate) {
+	RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+	cacheManager.setDefaultExpiration(3000);
+	return cacheManager;
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(DeliveryServicesApplication.class, args);
-	}
+    public static void main(String[] args) {
+	SpringApplication.run(DeliveryServicesApplication.class, args);
+    }
 }
