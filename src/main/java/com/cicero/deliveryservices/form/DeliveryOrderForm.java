@@ -18,6 +18,18 @@ public class DeliveryOrderForm implements Serializable {
 	private String address;
 	private String status;
 	
+	public DeliveryOrderForm(UUID orderId, int quantity, String type, String description, double total, String address,
+			String status) {
+		super();
+		this.orderId = orderId;
+		this.quantity = quantity;
+		this.type = type;
+		this.description = description;
+		this.total = total;
+		this.address = address;
+		this.status = status;
+	}
+
 	public DeliveryOrderForm() {
 	}
 

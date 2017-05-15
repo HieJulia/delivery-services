@@ -11,5 +11,12 @@ public abstract class OrderServiceConverter {
 				deliveryOrderForm.getAddress(), deliveryOrderForm.getStatus());
 		return deliveryOrder;
 	}
+	
+	public static DeliveryOrderForm convertFromDeliveryOrder(final DeliveryOrder deliveryOrder) {
+		final DeliveryOrderForm deliveryOrderForm = new DeliveryOrderForm(
+		deliveryOrder.getOrderId(), deliveryOrder.getQuantity(), deliveryOrder.getType(), deliveryOrder.getDescription(), deliveryOrder.getTotal(), deliveryOrder.getAddress(),
+		deliveryOrder.getStatus());
+		return deliveryOrderForm;
+	}
 
 }

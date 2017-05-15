@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cicero.deliveryservices.domain.DeliveryOrder;
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.sender.MessageResponse;
+import com.cicero.deliveryservices.service.DeliveryOrderRedisService;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 import com.cicero.deliveryservices.service.DeliveryOrderServiceAsync;
 
@@ -28,10 +29,10 @@ public class DeliveryServiceController {
 
 	@Autowired
 	private DeliveryOrderServiceAsync deliveryOrderServiceAsync;
-
+	
 	@RequestMapping(method = RequestMethod.GET, path = "/delivery/{id}", produces = "application/json")
-	public @ResponseBody DeliveryOrder searchDeliveryOrder(@PathVariable("id") String order) {
-		return this.deliveryOrderService.findOrder(UUID.fromString(order));
+	public @ResponseBody DeliveryOrderForm searchDeliveryOrder(@PathVariable("id") String order) {
+		return deliveryOrderService.findOrder(UUID.fromString(order));
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/delivery", consumes = "application/json")
@@ -42,8 +43,8 @@ public class DeliveryServiceController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/delivery", produces = "application/json")
-	public @ResponseBody List<DeliveryOrder> searchAllDeliveryOrder() {
-		return this.deliveryOrderService.findAll();
+	public @ResponseBody List<DeliveryOrderForm> searchAllDeliveryOrder() {
+		return deliveryOrderService.findAll();
 	}
 
 }

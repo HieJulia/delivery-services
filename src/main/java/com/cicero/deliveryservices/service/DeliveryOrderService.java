@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.UUID;
 
 import com.cicero.deliveryservices.domain.DeliveryOrder;
+import com.cicero.deliveryservices.form.DeliveryOrderForm;
 
 public interface DeliveryOrderService {
-	DeliveryOrder findOrder(UUID order);
-	List<DeliveryOrder> findAll();
-	DeliveryOrder createOrUpdateOrder(DeliveryOrder order);
+	DeliveryOrderForm findOrder(UUID order);
+	List<DeliveryOrderForm> findAll();
+	DeliveryOrderForm createOrUpdateOrder(DeliveryOrder order);
 }
