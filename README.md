@@ -19,6 +19,28 @@ Cassandra 3.X, Redis 3.X, Maven 3.X, RabbitMQ 3.6.X
 
 ```javascript
 CREATE KEYSPACE IF NOT EXISTS delivery WITH replication = {'class':'SimpleStrategy', 'replication_factor':1}
+
+
+CREATE TABLE IF NOT EXISTS  delivery.deliveryOrder (
+
+    orderId uuid,
+
+    type varchar,
+
+    description varchar,
+
+    address varchar,
+
+    quantity int,
+
+    total double,
+
+    status varchar,
+
+    primary key((orderId))
+
+);
+
 ```
 
 2) Inicializar o RabbitMQ
@@ -28,7 +50,7 @@ CREATE KEYSPACE IF NOT EXISTS delivery WITH replication = {'class':'SimpleStrate
 ```javascript
 mvn clean install
 ```
-6) Inicializar o projeto
+6) Inicializar o projeto a partir do diretório
 ```javascript
 java - jar target/delivery-services-0.0.1-SNAPSHOT.jar
 ```
