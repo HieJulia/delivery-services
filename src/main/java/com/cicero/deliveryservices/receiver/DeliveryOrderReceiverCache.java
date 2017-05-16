@@ -30,7 +30,7 @@ public class DeliveryOrderReceiverCache {
      * @param orderMessage
      *            uma ordem de entrega.
      */
-    @RabbitListener(queues = "delivery-service")
+    @RabbitListener(queues = "delivery-service", containerFactory = "prefetchTenRabbitListenerContainerFactory")
     public void receiveMessage(DeliveryOrderForm orderMessage) {
 	log.info("[Received Message-Redis]:: " + orderMessage);
 	this.deliveryOrderRedisRepository.save(orderMessage);

@@ -1,9 +1,12 @@
 spring:
   data:
     cassandra:
-      keyspace-name: delivery
-contact-points: localhost
+        keyspace-name: delivery
+        contact-points: ${DOCKER_HOST_IP:0.0.0.0}
+        port: 9042
 delivery:
     service:
         queue: delivery-service
         exchange: delivery-service-exchange
+server:
+    contextPath: /api

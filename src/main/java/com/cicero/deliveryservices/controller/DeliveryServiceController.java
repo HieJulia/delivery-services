@@ -35,7 +35,6 @@ import io.swagger.annotations.ApiResponses;
  */
 @Api(value = "deliveryOrder", description = "Everything about your Delivery Order", produces = "application/json")
 @RestController
-@RequestMapping("/api")
 public class DeliveryServiceController {
 
     @Autowired
