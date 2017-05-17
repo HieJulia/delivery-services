@@ -17,6 +17,7 @@ http://localhost:8080/api/swagger-ui.html
 ## Pontos Melhoria
 Tornar nosso microserviço reativo, utilizando a stack do Netflix OSS ou projeto Spring Cloud que encapsula este, afim de termos mais recursos para escalarmos nosso serviço, como load balance, circuit braker, descoberta de novos serviços dinamicamente, entre outros.
 Outra melhoria é construirmos outro microserviço de gerenciamento de Token ou Shared Key Authentication, e utilizarmos no serviço de entrega, para tornar nossa API REST segura.
+Testes de integração RabbitMQ e Redis.
 
 ## Execução
 O projeto está sendo disponibilizado em um container Docker.
