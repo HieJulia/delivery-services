@@ -7,6 +7,8 @@ A arquitetura do projeto tem a finalidade de tem alta disponilidade e performanc
 O serviço foi desenvolvido utilizando Spring Boot por ser a forma mais fácil e rápida de se criar um microserviço. Para armazenamento das informações foi escolhido o banco de dados NoSQL MongoDB, por este oferecer uma boa disponibilidade
 Para desacoplar a dependência do banco de dados, as operações que fazem alguma atualização na base são enviadas para um fila no RabbitMQ, e então um consumidor atualiza a base, outro consumidor atualiza o cache no Redis. Nas operações de consulta primeiramente vamos ao cache.
 
+Nota: A idéia inicial foi utilizar o cassandra e estava sendo utilizado, porém o mesmo se mostrou com uma configuração um pouco complicada no docker, por isso, foi substituido pelo MongoDB.
+
 A documentação da API está sendo disponibilizada no swagger.
 
 http://localhost:8080/api/swagger-ui.html
