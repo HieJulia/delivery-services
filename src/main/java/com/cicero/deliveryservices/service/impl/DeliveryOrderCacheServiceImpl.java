@@ -8,25 +8,25 @@ import org.springframework.stereotype.Service;
 
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.repository.DeliveryOrderRedisRepository;
-import com.cicero.deliveryservices.service.DeliveryOrderRedisService;
+import com.cicero.deliveryservices.service.DeliveryOrderCacheService;
 
 /**
- * Implementacao de {@link DeliveryOrderRedisService}
+ * Implementacao de {@link DeliveryOrderCacheService}
  * @author cicero
  *
  */
 @Service
-public class DeliveryOrderRedisServiceImpl implements DeliveryOrderRedisService {
+public class DeliveryOrderCacheServiceImpl implements DeliveryOrderCacheService {
 
     @Autowired
-    private DeliveryOrderRedisRepository deliveryOrderRedisRepository;
+    private DeliveryOrderRedisRepository deliveryOrderCacheRepository;
 
     /* (non-Javadoc)
      * @see com.cicero.deliveryservices.service.DeliveryOrderRedisService#findAll()
      */
     @Override
     public List<DeliveryOrderForm> findAll() {
-	List<DeliveryOrderForm> deliverys = deliveryOrderRedisRepository.findAll().entrySet().stream()
+	List<DeliveryOrderForm> deliverys = deliveryOrderCacheRepository.findAll().entrySet().stream()
 		.map(delivery -> delivery.getValue()).collect(Collectors.toList());
 	return deliverys;
     }
@@ -36,14 +36,14 @@ public class DeliveryOrderRedisServiceImpl implements DeliveryOrderRedisService 
      */
     @Override
     public DeliveryOrderForm findOne(String orderId) {
-	return deliveryOrderRedisRepository.findOne(orderId);
+	return deliveryOrderCacheRepository.findOne(orderId);
     }
 
     /* (non-Javadoc)
      * @see com.cicero.deliveryservices.service.DeliveryOrderRedisService#save(com.cicero.deliveryservices.form.DeliveryOrderForm)
      */
     public void save(DeliveryOrderForm deliveryOrderForm) {
-	deliveryOrderRedisRepository.save(deliveryOrderForm);
+	deliveryOrderCacheRepository.save(deliveryOrderForm);
     }
 
 }

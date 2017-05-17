@@ -2,7 +2,7 @@ package com.cicero.deliveryservices.repository;
 
 import java.util.UUID;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.cicero.deliveryservices.domain.DeliveryOrder;
 
@@ -11,6 +11,6 @@ import com.cicero.deliveryservices.domain.DeliveryOrder;
  * @author cicero
  *
  */
-public interface DeliveryOrderRepository extends CrudRepository<DeliveryOrder, UUID> {
+public interface DeliveryOrderRepository extends MongoRepository<DeliveryOrder, UUID> {
 
 }

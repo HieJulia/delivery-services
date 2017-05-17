@@ -3,8 +3,7 @@ package com.cicero.deliveryservices.domain;
 import java.io.Serializable;
 import java.util.UUID;
 
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
+import org.springframework.data.annotation.Id;
 
 /**
  * Entidade para uma Ordem de entrega.
@@ -12,7 +11,6 @@ import org.springframework.data.cassandra.mapping.Table;
  * @author cicero
  *
  */
-@Table(value = "deliveryOrder")
 public class DeliveryOrder implements Serializable {
 
     /**
@@ -23,7 +21,7 @@ public class DeliveryOrder implements Serializable {
     /**
      * Indentificador da ordem.
      */
-    @PrimaryKey
+    @Id
     private UUID orderId;
     /**
      * Quantidade de produtos da entrega.

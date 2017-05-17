@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
-import com.cicero.deliveryservices.service.DeliveryOrderRedisService;
+import com.cicero.deliveryservices.service.DeliveryOrderCacheService;
 import com.cicero.deliveryservices.service.DeliveryOrderService;
 import com.cicero.deliveryservices.service.DeliveryService;
 
@@ -19,7 +19,7 @@ import com.cicero.deliveryservices.service.DeliveryService;
 public class DeliveryServiceImpl implements DeliveryService {
 
     @Autowired
-    private DeliveryOrderRedisService deliveryOrderRedisService;
+    private DeliveryOrderCacheService deliveryOrderRedisService;
 
     @Autowired
     private DeliveryOrderService deliveryOrderService;

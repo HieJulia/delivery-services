@@ -9,7 +9,7 @@ import com.cicero.deliveryservices.form.DeliveryOrderForm;
  * @author cicero
  *
  */
-public interface DeliveryOrderRedisService {
+public interface DeliveryOrderCacheService {
     /**
      * Retorna todas as ordem de entrega.
      * @return <code>List<DeliveryOrderForm></code> uma lista com as ordens de entrega.

@@ -1,9 +1,10 @@
 spring:
+  application:
+    name: delivery
   data:
-    cassandra:
-        keyspace-name: delivery
-        contact-points: ${DOCKER_HOST_IP:0.0.0.0}
-        port: 9042
+    mongodb:
+      host: localhost
+      database: delivery-db
 delivery:
     service:
         queue: delivery-service
