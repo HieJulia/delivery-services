@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.repository.DeliveryOrderRedisRepository;
+import com.cicero.deliveryservices.sender.MessageSender;
 
 /**
  * Implementacao do repositorio para as operacoes no Redis.
@@ -19,6 +22,9 @@ import com.cicero.deliveryservices.repository.DeliveryOrderRedisRepository;
  */
 @Component
 public class DeliveryOrderRedisRepositoryImpl implements DeliveryOrderRedisRepository {
+    
+    
+    private static final Logger log = LoggerFactory.getLogger(DeliveryOrderRedisRepositoryImpl.class);
 
     /**
      * Chave no Redis.
@@ -43,7 +49,9 @@ public class DeliveryOrderRedisRepositoryImpl implements DeliveryOrderRedisRepos
      */
     @Override
     public void save(DeliveryOrderForm deliveryOrderForm) {
+	log.info("DeliveryOrderRedisRepositoryImpl M=save", deliveryOrderForm.toString());
 	hashOps.put(KEY, deliveryOrderForm.getOrderId().toString(), deliveryOrderForm);
+	log.info("DeliveryOrderRedisRepositoryImpl M=save fim", deliveryOrderForm.toString());
     }
 
     /* (non-Javadoc)

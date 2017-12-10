@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
+import com.cicero.deliveryservices.MessageQueueConfig;
 import com.cicero.deliveryservices.form.DeliveryOrderForm;
 import com.cicero.deliveryservices.repository.DeliveryOrderRedisRepository;
 import com.cicero.deliveryservices.sender.MessageSender;
@@ -19,8 +20,6 @@ import com.cicero.deliveryservices.sender.MessageSender;
  *
  */
 @Component
-@EnableRabbit
-@EnableScheduling
 public class DeliveryOrderReceiverCache {
 
     private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
@@ -34,9 +33,9 @@ public class DeliveryOrderReceiverCache {
      * @param orderMessage
      *            uma ordem de entrega.
      */
-    @RabbitListener(queues = "${delivery.service.queue}", containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(queues = "cache.router")
     public void receiveMessage(DeliveryOrderForm orderMessage) {
-	log.info("[Received Message-Redis]:: " + orderMessage);
+	log.info("[Received Message][Cache]:: " + orderMessage);
 	this.deliveryOrderRedisRepository.save(orderMessage);
     }
 

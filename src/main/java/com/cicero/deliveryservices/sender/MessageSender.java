@@ -22,22 +22,21 @@ public class MessageSender {
 
     private static final Logger log = LoggerFactory.getLogger(MessageSender.class);
 
-    @Value("${delivery.service.queue}")
-    private String queueName;
+    @Value("${delivery.service.exchange}")
+    private String deliveryServiceExchange;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     /**
-     * Envia uma ordem de entrega para fila.
+     * Envia uma ordem de entrega para o exchange.
      * @param message mensagem a ser enviada para fila {@link DeliveryOrderForm}
      * @return {@link MessageResponse} resposta com identificador
      */
-    @Scheduled(fixedDelay = 3000L)
     public MessageResponse sendMessage(DeliveryOrderForm message) {
 	message.setOrderId(UUID.randomUUID());
 	log.info("[Sending message] ==> " + message.toString());
-	rabbitTemplate.convertAndSend(queueName, message);
+	rabbitTemplate.convertAndSend("fanoutroute", "", message);
 	return new MessageResponse(message.getOrderId().toString());
     }
 

@@ -2,12 +2,14 @@ package com.cicero.deliveryservices;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,57 +17,66 @@ import org.springframework.context.annotation.Configuration;
 import com.cicero.deliveryservices.receiver.DeliveryOrderReceiver;
 
 /**
- * Configuracoes da fila
+ * Queue Configurations
  * @author cicero
  *
  */
 @Configuration
 public class MessageQueueConfig {
     
-    @Value("${delivery.service.queue}")
-    private String queueName;
+    public static final String CACHE_QUEUE = "cache.router";
+    
+    public static final String PERSIST_QUEUE = "persist.router";
 
-    @Value("${delivery.service.exchange}")
-    private String deliveryServiceExchange;
+    private static final String deliveryServiceExchange = "fanoutroute";
 
     @Bean
-    Queue queue() {
-	return new Queue(queueName, false);
+    public Queue queueCache() {
+	return new Queue(CACHE_QUEUE, false);
+    }
+    
+    @Bean
+    public Queue queuePersist() {
+	return new Queue(PERSIST_QUEUE, false);
     }
 
     @Bean
-    TopicExchange exchange() {
-	return new TopicExchange(deliveryServiceExchange);
+    public FanoutExchange exchange() {
+	return new FanoutExchange(deliveryServiceExchange);
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-	return BindingBuilder.bind(queue).to(exchange).with(queueName);
+    public Binding bindingCacheQueue() {
+	return BindingBuilder.bind(queueCache()).to(exchange());
+    }
+    
+    @Bean
+    public Binding bindingPersistQueue() {
+	return BindingBuilder.bind(queuePersist()).to(exchange());
     }
 
     @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
 	    MessageListenerAdapter listenerAdapter) {
 	SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 	container.setConnectionFactory(connectionFactory);
-	container.setQueueNames(queueName);
+	container.setQueues(queueCache(), queuePersist());
 	container.setMessageListener(listenerAdapter);
-	container.setPrefetchCount(1);
 	return container;
     }
-
+    
     @Bean
-    MessageListenerAdapter listenerAdapter(DeliveryOrderReceiver receiver) {
+    public MessageListenerAdapter listenerAdapter(DeliveryOrderReceiver receiver) {
 	return new MessageListenerAdapter(receiver, "receiveMessage");
     }
     
-   @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
-        factory.setConcurrentConsumers(3);
-        factory.setMaxConcurrentConsumers(10);
-        return factory;
-    }
+//   @Bean
+//    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+//        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+//        factory.setConnectionFactory(connectionFactory);
+//        factory.setConcurrentConsumers(3);
+//        factory.setMaxConcurrentConsumers(10);
+//        return factory;
+//    }
 
 }

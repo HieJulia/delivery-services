@@ -7,7 +7,9 @@ spring:
       database: delivery-db
 delivery:
     service:
-        queue: delivery-service
+        queue: 
+            cache: delivery-service-cache
+            persist: delivery-service-persist
         exchange: delivery-service-exchange
 server:
     contextPath: /api
